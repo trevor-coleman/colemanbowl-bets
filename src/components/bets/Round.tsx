@@ -228,24 +228,18 @@ const Round: FunctionComponent<IRoundProps> = (props: IRoundProps) => {
                                  onClick={reopenBetting}
                                  variant={'contained'}>REOPEN
                                                        BETTING</Button></ListItem>
-                <ListItem><SelectWinnerButton roundId={roundId}
+                <ListItem><SelectWinnerButton roundInfo={roundInfo} roundId={roundId}
                                               roomId={roundInfo?.room} /></ListItem>
            </>
            : ""}
           {roundInfo.status === "complete"
-           ? <><ListItem><Button fullWidth
-                                 disabled={roundInfo.settled}
-                                 onClick={selectNewWinner}
-                                 variant={'contained'}>Select New
-                                                       Winner</Button></ListItem>
-                <ListItem><Button fullWidth
+           ? <ListItem><Button fullWidth
                                   disabled={roundInfo.settled}
                                   onClick={nextRound}
                                   color={"secondary"}
                                   variant={'contained'}>Next
                                                         Round</Button></ListItem>
 
-           </>
            : ""}</List></div>);
 };
 

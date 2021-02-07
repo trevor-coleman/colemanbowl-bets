@@ -35,6 +35,8 @@ const BottomNav: FunctionComponent<IBottomNavProps> = (props: IBottomNavProps) =
     return () => roomRef.off('value', sub)
   }, [auth.currentUser])
 
+  console.log("fjdsjfklsd;jhflksjhkflhfjlshjflsdjlkdajfldsak", room);
+
 
   return (
       <AppBar position="fixed"
@@ -52,7 +54,7 @@ const BottomNav: FunctionComponent<IBottomNavProps> = (props: IBottomNavProps) =
                                   icon={
                                     <HomeOutlined/>} />
           <BottomNavigationAction label="Bets"
-                                  value="/"
+                                  value={`/bets/${room}`}
                                   icon={<SvgIcon viewBox={"0 0 477.778 477.778"}><PokerChips/></SvgIcon>} />
           <BottomNavigationAction label="Edit List"
                                   value={`/edit/${room}`}

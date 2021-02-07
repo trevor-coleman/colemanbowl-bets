@@ -5,14 +5,14 @@ import { db } from '../fb';
 import { RoundInfo } from './bets/Round';
 import { encode } from '../firebase-encode';
 
-interface ISelectWinnerButtonProps {roomId:string|undefined, roundId:string|undefined}
+interface ISelectWinnerButtonProps {roomId:string|undefined, roundId:string|undefined, roundInfo: Partial<RoundInfo>}
 
 type SelectWinnerButtonProps = ISelectWinnerButtonProps;
 
 const SelectWinnerButton: FunctionComponent<ISelectWinnerButtonProps> = (props: ISelectWinnerButtonProps) => {
-  const {roomId, roundId} = props;
+  const {roomId, roundId, roundInfo} = props;
   const classes = useStyles();
-  const [roundInfo, setRoundInfo] = useState<Partial<RoundInfo>>({});
+
 
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
 
@@ -50,14 +50,6 @@ const SelectWinnerButton: FunctionComponent<ISelectWinnerButtonProps> = (props: 
   const handleClose = () => {
     setAnchorEl(null);
   };
-
-  useEffect(()=> {
-    const sub = db.ref(`rounds/${roundId}`).on('value', snap=>{
-      setRoundInfo(snap.val());
-    })
-
-    return db.ref(`rounds/${roundId}`).off('value', sub);
-  },[roundId])
 
 
   return (
