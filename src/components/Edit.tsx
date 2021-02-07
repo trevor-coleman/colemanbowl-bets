@@ -41,6 +41,18 @@ const Edit: FunctionComponent<IEditProps> = (props: IEditProps) => {
 
   console.log(roomId);
 
+  const user = auth.currentUser;
+  const leaveRoom = async () => {
+    if (!user) {
+      auth.signOut();
+      history.push("/sign-out")
+      return;
+    }
+    const {uid} = user;
+    await db.ref('profiles').child(uid).update({currentRoom: null})
+    history.push("/")
+  }
+
   useEffect(() => {
     if (!roomId) return history.push("/");
     if (!auth.currentUser) return history.push("/sign-in");
@@ -92,6 +104,8 @@ const Edit: FunctionComponent<IEditProps> = (props: IEditProps) => {
             })}
 
         </List>
+        <Button fullWidth onClick={()=>leaveRoom()}>Leave Room</Button>
+        <Button onClick={()=> {auth.signOut(); history.push('/sign-in')}} fullWidth>Sign Out</Button>
       </div>);
 };
 
