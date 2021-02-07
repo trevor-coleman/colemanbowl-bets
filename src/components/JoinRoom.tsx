@@ -150,9 +150,7 @@ const JoinRoom: FunctionComponent<IJoinRoomProps> = (props: IJoinRoomProps) => {
   };
 
   return (
-      currentRoom
-      ? <Redirect to={`/bets/${currentRoom}`} />
-      : <Grid container
+      <Grid container
               spacing={8}>
         <Grid item
               xs={12}>

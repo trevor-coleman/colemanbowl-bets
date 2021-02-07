@@ -35,12 +35,6 @@ const BottomNav: FunctionComponent<IBottomNavProps> = (props: IBottomNavProps) =
     return () => roomRef.off('value', sub)
   }, [auth.currentUser])
 
-  let path = history.location.pathname;
-  console.log(path);
-  if (history.location.pathname.includes("bets")) path = "/"
-  if (history.location.pathname.includes("edit")) path = `/edit/${room}`
-  if (history.location.pathname.includes("score")) path = "/scores"
-  console.log(path);
 
   return (
       <AppBar position="fixed"
@@ -49,7 +43,7 @@ const BottomNav: FunctionComponent<IBottomNavProps> = (props: IBottomNavProps) =
                 top   : "auto",
                 bottom: 0
               }}>
-        <BottomNavigation value={path}
+        <BottomNavigation value={0}
                           onChange={(event, newValue) => {
                             history?.push(newValue);
                           }}>
