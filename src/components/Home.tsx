@@ -12,11 +12,10 @@ const Home: FunctionComponent<IHomeProps> = (props: IHomeProps) => {
   const {} = props;
   const classes = useStyles();
 
-  const isInRoom = false
 
   return (
       <div className={classes.Home}>
-        {isInRoom ? <div/> : <JoinRoom/>}
+        <JoinRoom/>
         </div>);
 };
 

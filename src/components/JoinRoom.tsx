@@ -31,12 +31,15 @@ const JoinRoom: FunctionComponent<IJoinRoomProps> = (props: IJoinRoomProps) => {
   useEffect(() => {
     if (!auth.currentUser) return;
 
+
     const {uid} = auth.currentUser;
     db
         .ref('profiles')
         .child(uid)
         .child("currentRoom")
-        .on("value", snap => setCurrentRoom(snap.val()));
+        .on("value", snap => {
+          console.log("HEREREHJRHEJRJE", snap.val())
+          setCurrentRoom(snap.val());});
 
     return () => {
       db.ref('profiles')
@@ -64,7 +67,7 @@ const JoinRoom: FunctionComponent<IJoinRoomProps> = (props: IJoinRoomProps) => {
 
     db.ref('rooms').update({
                              [roomId]: {
-                               round  : 0,
+                               currentRound  : roundKey,
                                rounds : [roundKey],
                                host   : uid,
                                players: {
@@ -109,17 +112,22 @@ const JoinRoom: FunctionComponent<IJoinRoomProps> = (props: IJoinRoomProps) => {
       photoURL,
       displayName,
     } = auth.currentUser;
-    db.ref('rooms').child(upperRoom).child("players").update({
-                                                               [uid]: {
-                                                                 name           : displayName,
-                                                                 startingBalance: 50,
-                                                                 currentBalance : 50,
-                                                                 wins           : 0,
-                                                                 bets           : 0,
-                                                                 photo          : photoURL,
-                                                               },
+    db.ref('rooms').child(upperRoom).child("players").once('value', snap=>{
+      if(!snap.val()[uid]) {
+        db.ref('rooms').child(upperRoom).child("players").update({
+                                                                   [uid]: {
+                                                                     name           : displayName,
+                                                                     startingBalance: 50,
+                                                                     currentBalance : 50,
+                                                                     wins           : 0,
+                                                                     bets           : 0,
+                                                                     photo          : photoURL,
+                                                                   },
 
-                                                             });
+                                                                 });
+
+      }
+    })
 
     db.ref('profiles').child(uid).update({currentRoom: upperRoom});
     db
@@ -127,9 +135,10 @@ const JoinRoom: FunctionComponent<IJoinRoomProps> = (props: IJoinRoomProps) => {
         .child(upperRoom)
         .once('value', snap => {
           const val = snap.val();
+          console.log(snap.val());
           db
               .ref('rounds')
-              .child(val.rounds[val.round])
+              .child(val.currentRound)
               .child("players")
               .update({
                         [uid]: {

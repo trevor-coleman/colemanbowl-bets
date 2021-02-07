@@ -7,14 +7,14 @@ import {
   ListItem,
   ListItemSecondaryAction, IconButton,
 } from '@material-ui/core';
-import { CheckCircle, Delete } from '@material-ui/icons';
+import { CheckCircle, Delete, Check } from '@material-ui/icons';
 import { auth } from '../../fb';
 
 interface IBetListItemProps {
   bet?: {
     uid: string,
     photoURL: string,
-    displayName: string },
+    displayName: string, collected?: boolean },
   option: string,
   onSelect:  (option:string )=>void,
   onCancel:  (option:string )=>void
@@ -30,11 +30,7 @@ const BetListItem: FunctionComponent<IBetListItemProps> = (props: IBetListItemPr
     option,onSelect,onCancel
   } = props;
   const classes = useStyles();
-
-  console.log("BET", bet?.uid);
-
   const isMyBet = bet?.uid === auth?.currentUser?.uid;
-
 
   return (
       <ListItem classes={{disabled: classes.disabled, selected: classes.selected}} selected={isMyBet} button onClick={()=>onSelect(option)}
@@ -45,7 +41,11 @@ const BetListItem: FunctionComponent<IBetListItemProps> = (props: IBetListItemPr
                          }
         </ListItemAvatar>
         <ListItemText primary={option} />
-        {isMyBet ? <ListItemSecondaryAction><IconButton onClick={()=>onCancel(option)}><Delete/></IconButton></ListItemSecondaryAction> :""}
+        {isMyBet
+         ? bet?.collected
+          ? <ListItemSecondaryAction><IconButton disabled><Check /></IconButton></ListItemSecondaryAction>
+          : <ListItemSecondaryAction><IconButton onClick={()=>onCancel(option)}><Delete/></IconButton></ListItemSecondaryAction>
+         : ""}
       </ListItem>);
 };
 

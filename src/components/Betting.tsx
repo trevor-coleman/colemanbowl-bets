@@ -12,13 +12,21 @@ import {
   Avatar,
   IconButton,
   ListItemSecondaryAction,
-  Typography, Button,
+  Typography,
+  Button,
+  Card,
+  CardHeader,
+  CardContent,
+  CardActions,
+  Grid,
+  Grow, GridListTile,
 } from '@material-ui/core';
 import { CheckCircle } from '@material-ui/icons';
 import BetListItem from './bets/BetListItem';
 import { useParams, useHistory } from 'react-router-dom';
 import { db, auth } from '../fb';
 import Round from './bets/Round';
+import UserCard from './UserCard';
 
 interface IBettingProps {}
 
@@ -27,7 +35,7 @@ type BettingProps = IBettingProps;
 const Betting: FunctionComponent<IBettingProps> = (props: IBettingProps) => {
   const {} = props;
   const classes = useStyles();
-  const {roomId, round} = useParams<{roomId:string, round?:string}>();
+  const {roomId} = useParams<{roomId:string, round?:string}>();
   const history=useHistory();
 
   const [room, setRoom] = useState<any>({})
@@ -51,13 +59,13 @@ const Betting: FunctionComponent<IBettingProps> = (props: IBettingProps) => {
       setRoom(val)
     })
     return ()=> db.ref(`rooms`).child(roomId).off()
-  }, [roomId, round])
+  }, [roomId])
 
   const onSelect = useCallback((option:string) => {
 
   },[])
 
-  const roundId = room?.rounds?.[room.round];
+  const roundId = room?.currentRound;
 
   function addCategory(newCategory:string): void {
     const newOptions = [...room.options];
@@ -68,16 +76,19 @@ const Betting: FunctionComponent<IBettingProps> = (props: IBettingProps) => {
 
 
   return (
-      <div className={classes.scroll}><Typography variant={"h5"}>{roomId}</Typography>
-        <Button onClick={leaveRoom}>Leave Room</Button>
-        <Round addCategory={addCategory} room={room} round={roundId}/>
-      </div>);
+      <div className={classes.Bets}><UserCard/>
+        <Round addCategory={addCategory}
+               room={room}
+               roundId={roundId} />
+      </div>
+      );
 };
 
 const useStyles = makeStyles((theme: Theme) => (
     {
       Bets: {},
-      scroll: {overflow: "scroll"}
+      spacer: {flexGrow:1},
+
     }));
 
 export default Betting;
