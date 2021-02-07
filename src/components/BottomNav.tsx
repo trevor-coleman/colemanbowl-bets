@@ -1,4 +1,4 @@
-import React, { FunctionComponent } from 'react';
+import React, { FunctionComponent, useState, useEffect } from 'react';
 import { makeStyles, Theme } from "@material-ui/core/styles";
 import {
   BottomNavigation, BottomNavigationAction, AppBar, SvgIcon,
@@ -10,6 +10,8 @@ import { useHistory } from 'react-router-dom';
 import { ReactComponent as PokerChips } from './svg/casino-chip-svgrepo-com.svg'
 import { ReactComponent as Podium } from './svg/podium-svgrepo-com.svg'
 import { ListAlt } from '@material-ui/icons';
+import { auth, db } from '../fb';
+import { Player } from './Edit';
 
 
 interface IBottomNavProps {}
@@ -21,14 +23,24 @@ const BottomNav: FunctionComponent<IBottomNavProps> = (props: IBottomNavProps) =
   const classes = useStyles();
   const history = useHistory();
 
-  console.log(history.location);
+  const [room, setRoom] = useState("");
+
+  useEffect(() => {
+    if (!auth.currentUser) {return;}
+
+    const {uid} = auth.currentUser;
+    let roomRef = db.ref('profiles').child(uid).child('currentRoom');
+    const sub = roomRef.on('value', snap => { setRoom(snap.val())})
+
+    return () => roomRef.off('value', sub)
+  }, [auth.currentUser])
 
   let path = history.location.pathname;
-  if(history.location.pathname.includes("bets")) path="/"
-  if (history.location.pathname.includes("edit")) path = "/edit"
+  console.log(path);
+  if (history.location.pathname.includes("bets")) path = "/"
+  if (history.location.pathname.includes("edit")) path = `/edit/${room}`
   if (history.location.pathname.includes("score")) path = "/scores"
-
-
+  console.log(path);
 
   return (
       <AppBar position="fixed"
@@ -39,14 +51,13 @@ const BottomNav: FunctionComponent<IBottomNavProps> = (props: IBottomNavProps) =
               }}>
         <BottomNavigation value={path}
                           onChange={(event, newValue) => {
-                            console.log(newValue);
                             history?.push(newValue);
                           }}>
           <BottomNavigationAction label="Home"
                                   value="/"
                                   icon={<SvgIcon viewBox={"0 0 477.778 477.778"}><PokerChips/></SvgIcon>} />
           <BottomNavigationAction label="Edit List"
-                                  value="/edit"
+                                  value={`/edit/${room}`}
                                   icon={<ListAlt />} />
           <BottomNavigationAction label="Scores"
                                   value="/scores"

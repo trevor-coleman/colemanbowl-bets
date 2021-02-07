@@ -51,9 +51,7 @@ const Round: FunctionComponent<IRoundProps> = (props: IRoundProps) => {
 
   useEffect(() => {
     if (roundId) {
-      console.log("Setting Listener", roundId);
       const sub = db.ref('rounds').child(roundId).on('value', function updateState (snap)  {
-        console.log(snap.val());
         setRoundInfo(snap.val());
       });
 
@@ -61,7 +59,6 @@ const Round: FunctionComponent<IRoundProps> = (props: IRoundProps) => {
     }
   }, [roundId, room]);
 
-  console.log(roundInfo.options);
 
   const betOnSelected = (option: string) => {
     if (!roundId) return;

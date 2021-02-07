@@ -11,6 +11,8 @@ import BottomNav from './components/BottomNav';
 import PrivateRoute from './components/PrivateRoute';
 import SignIn from './components/SignIn';
 import TitleBar from './components/TitleBar';
+import Edit from './components/Edit';
+import EditPlayer from './components/EditPlayer';
 
 const useStyles = makeStyles(theme => (
     {
@@ -33,8 +35,6 @@ const useStyles = makeStyles(theme => (
         overflow:"scroll",
         padding: theme.spacing(2),
         overscrollBehavior:"none"
-
-
       },
       bottomNav: {
         height: "10vh",
@@ -54,6 +54,8 @@ function App() {
           <Container className={classes.container}>
             <Switch>
               <PrivateRoute path={"/bets/:roomId"}><Betting /></PrivateRoute>
+              <PrivateRoute path={"/edit/:roomId"}><Edit /></PrivateRoute>
+
               <Route path="/sign-in"><SignIn /></Route>
               <PrivateRoute path={"/"}><Home /></PrivateRoute>
             </Switch>

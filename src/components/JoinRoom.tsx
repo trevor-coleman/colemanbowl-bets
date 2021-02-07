@@ -38,7 +38,6 @@ const JoinRoom: FunctionComponent<IJoinRoomProps> = (props: IJoinRoomProps) => {
         .child(uid)
         .child("currentRoom")
         .on("value", snap => {
-          console.log("HEREREHJRHEJRJE", snap.val())
           setCurrentRoom(snap.val());});
 
     return () => {
@@ -73,8 +72,8 @@ const JoinRoom: FunctionComponent<IJoinRoomProps> = (props: IJoinRoomProps) => {
                                players: {
                                  [uid]: {
                                    name           : auth.currentUser.displayName,
-                                   startingBalance: 50,
-                                   currentBalance : 50,
+                                   startingBalance: 0,
+                                   currentBalance : 0,
                                    wins           : 0,
                                    bets           : 0,
                                    photo          : auth.currentUser.photoURL,
