@@ -14,6 +14,8 @@ const TitleBar: FunctionComponent<ITitleBarProps> = (props: ITitleBarProps) => {
   const classes = useStyles();
   const history=useHistory();
 
+  const [room, setRoom] = useState(
+      "");
   const [userState, setUserState] = useState<"inRoom" | "signedIn" | "signedOut">("signedOut");
   const user=auth.currentUser;
   useEffect(()=>{

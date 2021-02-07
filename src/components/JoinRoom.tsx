@@ -112,7 +112,7 @@ const JoinRoom: FunctionComponent<IJoinRoomProps> = (props: IJoinRoomProps) => {
       displayName,
     } = auth.currentUser;
     db.ref('rooms').child(upperRoom).child("players").once('value', snap=>{
-      if(!snap.val()[uid]) {
+      if(!snap.val()?.uid) {
         db.ref('rooms').child(upperRoom).child("players").update({
                                                                    [uid]: {
                                                                      name           : displayName,
@@ -150,7 +150,9 @@ const JoinRoom: FunctionComponent<IJoinRoomProps> = (props: IJoinRoomProps) => {
   };
 
   return (
-      <Grid container
+      currentRoom
+      ? <Redirect to={`/bets/${currentRoom}`} />
+      : <Grid container
               spacing={8}>
         <Grid item
               xs={12}>

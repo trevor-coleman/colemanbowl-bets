@@ -1,7 +1,7 @@
 import React, { FunctionComponent, useState, useEffect } from 'react';
 import { makeStyles, Theme } from "@material-ui/core/styles";
 import GoogleButton from 'react-google-button'
-import{auth, signInWithGoogle} from '../fb';
+import { auth, signInWithGoogle, db } from '../fb';
 import { Redirect } from 'react-router-dom';
 
 interface ISignInProps {}
@@ -19,7 +19,7 @@ const SignIn: FunctionComponent<ISignInProps> = (props: ISignInProps) => {
     return unsub;
   }, [])
 
-  console.log(auth.currentUser);
+  if(auth.currentUser)db.ref('profiles').child(auth.currentUser.uid).child('currentRoom').set(null);
 
   return (
       auth.currentUser ? <Redirect to={"/"}/> :

@@ -9,7 +9,7 @@ import LocationOnIcon from '@material-ui/icons/LocationOn';
 import { useHistory } from 'react-router-dom';
 import { ReactComponent as PokerChips } from './svg/casino-chip-svgrepo-com.svg'
 import { ReactComponent as Podium } from './svg/podium-svgrepo-com.svg'
-import { ListAlt } from '@material-ui/icons';
+import { ListAlt, HomeOutlined } from '@material-ui/icons';
 import { auth, db } from '../fb';
 import { Player } from './Edit';
 
@@ -48,6 +48,10 @@ const BottomNav: FunctionComponent<IBottomNavProps> = (props: IBottomNavProps) =
                             history?.push(newValue);
                           }}>
           <BottomNavigationAction label="Home"
+                                  value="/"
+                                  icon={
+                                    <HomeOutlined/>} />
+          <BottomNavigationAction label="Bets"
                                   value="/"
                                   icon={<SvgIcon viewBox={"0 0 477.778 477.778"}><PokerChips/></SvgIcon>} />
           <BottomNavigationAction label="Edit List"
