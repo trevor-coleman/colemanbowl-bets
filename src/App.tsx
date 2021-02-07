@@ -55,6 +55,7 @@ function App() {
             <Switch>
               <PrivateRoute path={"/bets/:roomId"}><Betting /></PrivateRoute>
               <PrivateRoute path={"/edit/:roomId"}><Edit /></PrivateRoute>
+              <PrivateRoute path={"/edit/"}><Edit /></PrivateRoute>
 
               <Route path="/sign-in"><SignIn /></Route>
               <PrivateRoute path={"/"}><Home /></PrivateRoute>

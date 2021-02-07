@@ -63,7 +63,7 @@ const Betting: FunctionComponent<IBettingProps> = (props: IBettingProps) => {
 
   const onSelect = useCallback((option:string) => {
 
-  },[])
+  },[roomId, auth.currentUser])
 
   const roundId = room?.currentRound;
 
