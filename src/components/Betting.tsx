@@ -11,12 +11,13 @@ import {
   ListItemAvatar,
   Avatar,
   IconButton,
-  ListItemSecondaryAction, Typography,
+  ListItemSecondaryAction,
+  Typography, Button,
 } from '@material-ui/core';
 import { CheckCircle } from '@material-ui/icons';
 import BetListItem from './bets/BetListItem';
 import { useParams, useHistory } from 'react-router-dom';
-import {db} from '../fb'
+import { db, auth } from '../fb';
 import Round from './bets/Round';
 
 interface IBettingProps {}
@@ -30,6 +31,15 @@ const Betting: FunctionComponent<IBettingProps> = (props: IBettingProps) => {
   const history=useHistory();
 
   const [room, setRoom] = useState<any>({})
+
+  const leaveRoom = ()=>{
+    if(!auth.currentUser) {
+      history.push("/");
+      return;
+    }
+    db.ref(`profiles/${auth.currentUser.uid}/currentRoom`).set(null);
+    history.push("/");
+  }
 
   useEffect(()=> {
     if(!roomId) {
@@ -49,15 +59,25 @@ const Betting: FunctionComponent<IBettingProps> = (props: IBettingProps) => {
 
   const roundId = room?.rounds?.[room.round];
 
+  function addCategory(newCategory:string): void {
+    const newOptions = [...room.options];
+    newOptions.push(newCategory);
+    db.ref(`rooms/${roomId}`).child("options").set(newOptions);
+    db.ref(`rounds/${roundId}`).child("options").set(newOptions);
+  }
+
+
   return (
-      <div><Typography variant={"h3"}>{roomId}</Typography>
-        <Round room={room} round={roundId}/>
+      <div className={classes.scroll}><Typography variant={"h5"}>{roomId}</Typography>
+        <Button onClick={leaveRoom}>Leave Room</Button>
+        <Round addCategory={addCategory} room={room} round={roundId}/>
       </div>);
 };
 
 const useStyles = makeStyles((theme: Theme) => (
     {
       Bets: {},
+      scroll: {overflow: "scroll"}
     }));
 
 export default Betting;

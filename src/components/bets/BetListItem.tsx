@@ -14,7 +14,7 @@ interface IBetListItemProps {
   bet?: {
     uid: string,
     photoURL: string,
-    name: string },
+    displayName: string },
   option: string,
   onSelect:  (option:string )=>void,
   onCancel:  (option:string )=>void
@@ -37,16 +37,14 @@ const BetListItem: FunctionComponent<IBetListItemProps> = (props: IBetListItemPr
 
 
   return (
-      <ListItem button onClick={()=>onSelect(option)}
+      <ListItem classes={{disabled: classes.disabled, selected: classes.selected}} selected={isMyBet} button onClick={()=>onSelect(option)}
                 disabled={Boolean(bet) && !isMyBet}>
         <ListItemAvatar>{bet
-                         ? <Avatar alt={bet.name} src={bet.photoURL} />
-                         : <Avatar>
-                           <CheckCircle />
-                         </Avatar>}
+                         ? <Avatar alt={bet?.displayName} src={bet.photoURL} />
+                         : <Avatar/>
+                         }
         </ListItemAvatar>
-        <ListItemText primary={option}
-                      secondary={bet?.name} />
+        <ListItemText primary={option} />
         {isMyBet ? <ListItemSecondaryAction><IconButton onClick={()=>onCancel(option)}><Delete/></IconButton></ListItemSecondaryAction> :""}
       </ListItem>);
 };
@@ -54,6 +52,8 @@ const BetListItem: FunctionComponent<IBetListItemProps> = (props: IBetListItemPr
 const useStyles = makeStyles((theme: Theme) => (
     {
       BetListItem: {},
+      disabled: {backgroundColor:theme.palette.warning.light, opacity:"0.8 !important"},
+      selected: {backgroundColor:`${theme.palette.success.light} !important`, opacity:"0.8 !important"}
     }));
 
 export default BetListItem;
