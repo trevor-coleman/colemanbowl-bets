@@ -86,7 +86,7 @@ const Betting: FunctionComponent<IBettingProps> = (props: IBettingProps) => {
 
 const useStyles = makeStyles((theme: Theme) => (
     {
-      Bets: {paddingBottom: 150,
+      Bets: {
       ...theme.mixins.toolbar},
       spacer: {flexGrow:1},
 

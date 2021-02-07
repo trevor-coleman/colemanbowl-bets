@@ -23,23 +23,8 @@ const UserCard: FunctionComponent<IUserCardProps> = (props: IUserCardProps) => {
                                       ""} /></Grid>
             <Grid item><Typography variant={'h5'}>{auth?.currentUser?.displayName ??
                                                    "Player"}</Typography></Grid>
-          </Grid>
-          <Grid container
-                direction={"row"}
-                spacing={2}>
-            <Grid item
-                  xs={2} />
-            <Grid item>
-            </Grid>
-            <Grid item
-                  className={classes.current}>
-              $50
-            </Grid>
-            <Grid item
-                  className={classes.profit}>(-$15)</Grid>
-          </Grid>
-
-        </Grid></CardContent>
+          </Grid></Grid>
+</CardContent>
       </Card>);
 };
 
